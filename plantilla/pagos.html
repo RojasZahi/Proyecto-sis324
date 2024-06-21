@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SISTEMA DE CONTROL DE COLAS</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./dist/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <style>
+        body {
+            background-image: url('images/sistemas2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body class="hold-transition layout-top-nav">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+            <div class="container">
+                <a href="index.html" class="navbar-brand">
+                  <img src="./dist/img/logo.png" alt=" Logo"
+                        class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">SISTEMA DE CONTROL DE COLAS</span>
+                </a>
+
+                <button class="navbar-toggler order-1" type="button" data-toggle="collapse"
+                    data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                    <!-- Left navbar links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link">Pacientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="medicos.html" class="nav-link">Medicos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="especialidades.html" class="nav-link">Especialidades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pagos.html" class="nav-link">Pagos</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right navbar links -->
+                <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                            Salir
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /.navbar -->
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Pagos</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card" id="cardTablaPago">
+                                <div class="card-header">
+                                    <button class="btn btn-primary" onclick="crearPago()">
+                                        <i class="fas fa-plus"></i>
+                                        Agregar Pago
+                                    </button>
+                                    <button class="btn btn-info ml-2" onclick="window.location.href='generartickets.html';">
+                                        <i class="fas fa-ticket-alt"></i>
+                                        Generar Ticket
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover text-nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>ID Pago</th>
+                                                    <th>ID Consulta</th>
+                                                    <th>Fecha de Pago</th>
+                                                    <th>Monto</th>
+                                                    <th>ID Paciente</th>
+                                                    <th>Nombre del Paciente</th>
+                                                    <th>Opciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="listaPagos">
+                                                <!-- Aquí se mostrarán los pagos -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario para agregar pago -->
+                            <div class="card" style="display: none;" id="cardFrmCrearPago">
+                                <div class="card-header">
+                                    Nuevo Pago
+                                </div>
+                                <div class="card-body">
+                                    <form id="frmNuevoPago">
+                                        <!-- Campos del formulario aquí -->
+                                        <div class="form-group">
+                                            <label for="idPago">ID Pago:</label>
+                                            <input type="text" class="form-control" id="idPago">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="idConsulta">ID Consulta:</label>
+                                            <input type="text" class="form-control" id="idConsulta">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fechaPago">Fecha de Pago:</label>
+                                            <input type="date" class="form-control" id="fechaPago">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="monto">Monto:</label>
+                                            <input type="text" class="form-control" id="monto">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="idPaciente">ID Paciente:</label>
+                                            <input type="text" class="form-control" id="idPaciente">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nombrePaciente">Nombre del Paciente:</label>
+                                            <input type="text" class="form-control" id="nombrePaciente">
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="button" class="btn btn-secondary" onclick="cancelarPago()">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Formulario para editar pago -->
+                            <div class="card" style="display: none;" id="cardFrmEditarPago">
+                                <div class="card-header">
+                                    Editar Pago
+                                </div>
+                                <div class="card-body">
+                                    <form id="frmEditarPago">
+                                        <input type="hidden" id="idPagoEditar">
+                                        <!-- Campos del formulario aquí -->
+                                        <div class="form-group">
+                                            <label for="idPagoEd">ID Pago:</label>
+                                            <input type="text" class="form-control" id="idPagoEd" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="idConsultaEd">ID Consulta:</label>
+                                            <input type="text" class="form-control" id="idConsultaEd">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fechaPagoEd">Fecha de Pago:</label>
+                                            <input type="date" class="form-control" id="fechaPagoEd">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="montoEd">Monto:</label>
+                                            <input type="text" class="form-control" id="montoEd">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="idPacienteEd">ID Paciente:</label>
+                                            <input type="text" class="form-control" id="idPacienteEd">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nombrePacienteEd">Nombre del Paciente:</label>
+                                            <input type="text" class="form-control" id="nombrePacienteEd">
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button type="button" class="btn btn-secondary" onclick="cancelarEdicionPago()">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-inline">
+                2023
+            </div>
+            <strong>Proyecto realizado por RUSSO JHONATTAN</strong>
+        </footer>
+    </div>
+
+    <!-- REQUIRED SCRIPTS -->
+
+    <!-- jQuery -->
+    <script src="./plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="./plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="./dist/js/adminlte.min.js"></script>
+
+    <!-- Script para manejar la lógica de los pagos -->
+    <script src="pagos.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+BUENAS INGENIER DURAN ESTOS SON LOS PASO PARA LEVANTAR LA PAGINA WEB
+
+1.- Importar la base de datos basededatosmed.sql a PHPmyadmin (copiar a Htdocs la carpeta .rar y descomprimirla)
+
+2.- Ingresar a la carpeta Proyestosis324(control de colas)
+
+3.- Abrir con visual code 
+
+4.- En nuevo terminal escribir cd back (para hacer la llamada a Node.js)
+
+5.- En el mismo terminal escribir npm run des (para levantar la web)
+
+5.- En la sección de Plantilla - index.html (click derecho - Open with Live Server  ) (http://127.0.0.1:5501/plantilla/index.html)
+

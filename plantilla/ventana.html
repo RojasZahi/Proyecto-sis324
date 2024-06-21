@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventana de Ticket</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('./dist/img/fondo.jpg'); /* Reemplaza 'ruta-de-la-imagen.jpg' con la ruta de tu imagen */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* Estilo para resaltar los tickets urgentes */
+        .ticket-urgente {
+            background-color: #f8d7da !important; /* Fondo rojo suave, !important para prioridad */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Ticket Generado</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Detalles del Ticket</h5>
+                        <p class="card-text"><strong>Número de Ticket:</strong> <span id="ticketNumber"></span></p>
+                        <p class="card-text"><strong>Paciente:</strong> <span id="paciente"></span></p>
+                        <p class="card-text"><strong>Especialidad:</strong> <span id="especialidad"></span></p>
+                        <p class="card-text"><strong>Médico:</strong> <span id="medico"></span></p>
+                        <p class="card-text"><strong>Tipo de Ticket:</strong> <span id="tipoTicket"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Video Explicativo</h5>
+                        <!-- Aquí puedes insertar el iframe con el video -->
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/tgbNymZ7vqY"
+                            title="Video explicativo"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón para generar otro ticket -->
+        <div class="text-center mt-4">
+            <a href="generartickets.html" class="btn btn-primary">Generar Otro Ticket</a>
+        </div>
+
+        <!-- Botón para limpiar el historial de tickets -->
+        <div class="text-center mt-4">
+            <button id="limpiarHistorial" class="btn btn-danger">Limpiar Historial</button>
+        </div>
+
+        <!-- Historial de Tickets -->
+        <div class="mt-5">
+            <h3 class="text-center mb-3">Historial de Tickets</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Número de Ticket</th>
+                            <th scope="col">Paciente</th>
+                            <th scope="col">Especialidad</th>
+                            <th scope="col">Médico</th>
+                            <th scope="col">Tipo de Ticket</th> <!-- Nueva columna para el tipo de ticket -->
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ticketHistory">
+                        <!-- Aquí se añadirán dinámicamente los tickets anteriores -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- Script para mostrar los datos del ticket y gestionar el número de ticket -->
+    <script>
+        // Función para obtener el número de ticket actual
+        function getTicketNumber() {
+            // Verificar si hay un número de ticket almacenado en LocalStorage
+            let ticketNumber = localStorage.getItem('ticketNumber');
+            // Si no hay un número de ticket almacenado, comenzar desde 1
+            if (!ticketNumber) {
+                ticketNumber = 1;
+            }
+            return parseInt(ticketNumber);
+        }
+
+        // Función para actualizar y guardar el número de ticket en LocalStorage
+        function updateTicketNumber(newTicketNumber) {
+            localStorage.setItem('ticketNumber', newTicketNumber.toString());
+        }
+
+        // Función para obtener parámetros de la URL
+        function getUrlParams(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Función para mostrar los datos del ticket y gestionar el historial
+        document.addEventListener('DOMContentLoaded', function () {
+            const ticketNumber = getTicketNumber();
+            const paciente = getUrlParams('paciente');
+            const especialidad = getUrlParams('especialidad');
+            const medico = getUrlParams('medico');
+            const tipoTicket = getUrlParams('tipo');
+
+            // Mostrar los datos del ticket
+            document.getElementById('ticketNumber').textContent = ticketNumber;
+            document.getElementById('paciente').textContent = paciente;
+            document.getElementById('especialidad').textContent = especialidad;
+            document.getElementById('medico').textContent = medico;
+            document.getElementById('tipoTicket').textContent = tipoTicket.charAt(0).toUpperCase() + tipoTicket.slice(1);
+
+            // Incrementar el número de ticket para el siguiente
+            updateTicketNumber(ticketNumber + 1);
+
+            // Guardar el ticket en el historial
+            const ticketDetails = {
+                numero: ticketNumber,
+                paciente: paciente,
+                especialidad: especialidad,
+                medico: medico,
+                tipo: tipoTicket
+            };
+            const ticketHistory = localStorage.getItem('ticketHistory') ? JSON.parse(localStorage.getItem('ticketHistory')) : [];
+            ticketHistory.push(ticketDetails);
+            localStorage.setItem('ticketHistory', JSON.stringify(ticketHistory));
+
+            // Mostrar el historial de tickets en la tabla
+            const ticketHistoryTable = document.getElementById('ticketHistory');
+            ticketHistoryTable.innerHTML = '';
+            ticketHistory.forEach((ticket, index) => {
+                // Determinar si el ticket es urgente para aplicar el estilo completo a la fila
+                const urgenteClass = ticket.tipo.toLowerCase() === 'urgente' ? 'ticket-urgente' : '';
+                const row = `
+                    <tr class="${urgenteClass}">
+                        <td>${index + 1}</td>
+                        <td>${ticket.numero}</td>
+                        <td>${ticket.paciente}</td>
+                        <td>${ticket.especialidad}</td>
+                        <td>${ticket.medico}</td>
+                        <td>${ticket.tipo.charAt(0).toUpperCase() + ticket.tipo.slice(1)}</td>
+                        <td><button class="btn btn-primary btn-sm" onclick="llamarPantalla(${ticket.numero})">Llamar</button></td>
+                    </tr>`;
+                ticketHistoryTable.innerHTML += row;
+            });
+
+            // Evento para limpiar el historial de tickets
+            document.getElementById('limpiarHistorial').addEventListener('click', function () {
+                localStorage.removeItem('ticketHistory');
+                ticketHistoryTable.innerHTML = ''; // Limpiar la tabla en la interfaz
+                alert('Historial de tickets limpiado.');
+                // Reiniciar el número de ticket a 1 después de limpiar el historial
+                updateTicketNumber(1);
+                // Actualizar el número de ticket en la interfaz
+                document.getElementById('ticketNumber').textContent = 1;
+            });
+        });
+
+        // Función para llamar a pantalla con el número de ticket especificado
+        function llamarPantalla(numeroTicket) {
+            // Abrir pantalla.html en una ventana emergente y pasar el número de ticket como parámetro en la URL
+            window.open(
+                `pantalla.html?ticket=${numeroTicket}`,
+                'popupWindow',
+                'width=600,height=400,scrollbars=yes,resizable=yes'
+            );
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Tickets</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous">
+        <style>
+            body {
+                background-image: url('./dist/img/fondo.jpg'); /* Reemplaza 'ruta-de-la-imagen.jpg' con la ruta de tu imagen */
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+            
+            </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Botón para ir a index.html -->
+                <a href="index.html" class="btn btn-outline-primary">PAGINA DE INICIO</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal de Generar Tickets -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Generar Tickets</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Seleccionar Paciente</h5>
+                        <form id="formPaciente">
+                            <div class="mb-3">
+                                <label for="selectPaciente" class="form-label">Paciente</label>
+                                <select class="form-select" id="selectPaciente" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="Juan Pérez">Juan Pérez</option>
+                                    <option value="María García">María García</option>
+                                    <option value="Carlos Sánchez">Carlos Sánchez</option>
+                                    <option value="Juan Pérez">Carlos Rodriguez</option>
+                                    <option value="Juan Pérez">Miguel Lopez</option>
+                                    <!-- Opciones de pacientes cargadas dinámicamente desde paciente.js -->
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Seleccionar Especialidad</h5>
+                        <form id="formEspecialidad">
+                            <div class="mb-3">
+                                <label for="selectEspecialidad" class="form-label">Especialidad</label>
+                                <select class="form-select" id="selectEspecialidad" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="Cardiología">Cardiología</option>
+                                    <option value="Dermatología">Dermatología</option>
+                                    <option value="Neurología">Neurología</option>
+                                    <!-- Opciones de especialidades cargadas dinámicamente desde especialidad.js -->
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Seleccionar Médico</h5>
+                        <form id="formMedico">
+                            <div class="mb-3">
+                                <label for="selectMedico" class="form-label">Médico</label>
+                                <select class="form-select" id="selectMedico" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="Dr. Fernández">Dr. Fernández</option>
+                                    <option value="Dra. López">Dra. López</option>
+                                    <option value="Dr. Martínez">Dr. Martínez</option>
+                                    <!-- Opciones de médicos cargadas dinámicamente desde medico.js -->
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-primary mx-2" onclick="generarTicket('normal')">Generar Ticket Normal</button>
+                <button class="btn btn-danger mx-2" onclick="generarTicket('urgente')">Generar Ticket Urgente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- Script para cargar opciones de pacientes -->
+    <script src="pacientes.js"></script>
+    
+    <!-- Script para cargar opciones de especialidades -->
+    <script src="especialidades.js"></script>
+    
+    <!-- Script para cargar opciones de médicos -->
+    <script src="medicos.js"></script>
+
+    <!-- Script para manejar la generación de tickets -->
+    <script>
+        function generarTicket(tipo) {
+            const pacienteSelect = document.getElementById('selectPaciente');
+            const especialidadSelect = document.getElementById('selectEspecialidad');
+            const medicoSelect = document.getElementById('selectMedico');
+
+            const paciente = pacienteSelect.value;
+            const especialidad = especialidadSelect.value;
+            const medico = medicoSelect.value;
+
+            if (paciente && especialidad && medico) {
+                const ticketNumber = Math.floor(Math.random() * 100000); // Generar un número de ticket aleatorio
+                // Redirigir a ventana.html con los parámetros necesarios
+                window.location.href = `ventana.html?ticket=${ticketNumber}&paciente=${paciente}&especialidad=${especialidad}&medico=${medico}&tipo=${tipo}`;
+            } else {
+                alert('Por favor, seleccione Paciente, Especialidad y Médico.');
+            }
+        }
+    </script>
+</body>
+
+</html>
